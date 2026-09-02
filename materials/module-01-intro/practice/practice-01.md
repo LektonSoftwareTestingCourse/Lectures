@@ -6,7 +6,7 @@
 > **Проверка**: CI (сборка, контейнеры, smoke)
 > **Длительность**: 1,5 астрономических часа (90 мин)
 > **Формат**: Демонстрация → критерии → самостоятельная работа → разбор проблем
-> **Дата**: 03.08.2026
+> **Дата**: 04.09.2026
 > **Связь с лекциями**: [`lecture-01.md`](../slides/lecture-01.md) (СМП, слайд 10–12), [`lecture-02.md`](../slides/lecture-02.md) (модель данных, слайд 13)
 
 ---
@@ -54,12 +54,12 @@
 
 ## Часть 2. Критерии сдачи (0:15–0:20)
 
-**Чек-лист артефакта 1** (сверено с [`practic/docs/checklists.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/checklists.md) — Ревью №1, и [`practic/README.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/README.md) — Быстрый старт):
+**Чек-лист артефакта 1** (сверено с [`practic/docs/checklists.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/checklists.md) — раздел «Артефакт 1», и [`practic/README.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/README.md) — Быстрый старт):
 
 - [ ] `docker compose up -d` поднимает все 11 сервисов + RabbitMQ без ошибок
 - [ ] `curl http://localhost:{port}/health` каждого сервиса возвращает HTTP 200
-- [ ] `curl http://localhost:8096/health` — Bin Lookup возвращает 200
-- [ ] `curl http://localhost:8097/health` — Notification Service возвращает 200
+- [ ] `curl http://localhost:8096/actuator/health` — Bin Lookup возвращает 200
+- [ ] `curl http://localhost:8097/actuator/health` — Notification Service возвращает 200
 - [ ] RabbitMQ Management UI доступен на `http://localhost:15672` (логин: `smp`, пароль: `smp`)
 - [ ] `./scripts/smoke-test.sh` завершается `🎉 ALL CHECKS PASSED`
 - [ ] Dashboard доступен на `http://localhost:3000`
@@ -75,10 +75,10 @@
 | Switch / Router | 8082 | `curl http://localhost:8082/health` |
 | Authorization | 8083 | `curl http://localhost:8083/health` |
 | Terminal Simulator | 8085 | `curl http://localhost:8085/health` |
-| Merchant Simulator | 8086 | `curl http://localhost:8086/health` |
+| Merchant Simulator | 8084 | `curl http://localhost:8084/health` |
 | Transaction Logger | 8088 | `curl http://localhost:8088/health` |
-| Bin Lookup | 8096 | `curl http://localhost:8096/health` |
-| Notification Service | 8097 | `curl http://localhost:8097/health` |
+| Bin Lookup | 8096 | `curl http://localhost:8096/actuator/health` |
+| Notification Service | 8097 | `curl http://localhost:8097/actuator/health` |
 | Web Dashboard | 3000 | браузер |
 | RabbitMQ Management UI | 15672 | браузер |
 
@@ -116,6 +116,8 @@ cp .env.example .env
 docker compose up -d
 ```
 
+> **Профиль `observability`:** Prometheus, Grafana, Loki, Promtail и autoscaler вынесены в отдельный compose-профиль и по умолчанию выключены. Для базовой практики достаточно `docker compose up -d` (11 сервисов + PostgreSQL + RabbitMQ). Полный стек с мониторингом запускается командой `docker compose --profile observability up -d` — он понадобится в модуле 8.
+
 ### Шаг 4. Проверка health-check (все 11 сервисов)
 
 ```bash
@@ -124,7 +126,7 @@ curl http://localhost:8081/health   # Card Management
 curl http://localhost:8082/health   # Switch
 curl http://localhost:8083/health   # Authorization
 curl http://localhost:8085/health   # Terminal Simulator
-curl http://localhost:8086/health   # Merchant Simulator
+curl http://localhost:8084/health   # Merchant Simulator
 curl http://localhost:8088/health   # Transaction Logger
 curl http://localhost:8096/health   # Bin Lookup
 curl http://localhost:8097/health   # Notification Service
