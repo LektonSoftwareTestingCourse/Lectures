@@ -58,7 +58,7 @@
 
 > **Примечание**: каждая содержательная практика проводится совместно для обеих учебных групп, согласно официальному расписанию ИТМО.
 >
-> **Workflow сдачи:** см. [`practic/docs/submission-guide.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/submission-guide.md). Ветки: `practice-{N}-{surname}`. Сдача через Issue с label `practice-N`.
+> **Workflow сдачи:** см. [`practic/docs/submission-guide.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/submission-guide.md). Каждый студент работает в своём отдельном репозитории `Practic{Имя}{Фамилия}`. Сдача через Issue с label `practice-N` в эталонном репозитории.
 
 ### Проходные практики (8)
 

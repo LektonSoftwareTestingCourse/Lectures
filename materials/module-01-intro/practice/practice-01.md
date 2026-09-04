@@ -85,6 +85,8 @@
 **Текст для преподавателя:**
 
 > Критерии сдачи. Первый: `docker compose up -d` поднимает все 11 сервисов и RabbitMQ без ошибок. Второй: health-check каждого сервиса возвращает 200. Порты — вот на этой шпаргалке. Третий: RabbitMQ Management UI открывается на `localhost:15672`. Четвёртый: smoke-тест завершается `ALL CHECKS PASSED`. Пятый: Dashboard открывается. Шестой: генерация карт работает. Седьмой: симулятор терминалов отправляет транзакции. Если все пункты зелёные — артефакт 1 сдан, 6 баллов ваших.
+>
+> Про сам механизм сдачи — куда пушить, как оформить Issue и что туда вставить — смотрите [`submission-guide.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/submission-guide.md). Коротко: работаем в своём репозитории `Practic{Имя}{Фамилия}`, а сдаёмся Issue в эталонном репозитории со ссылкой на свой Actions run.
 
 ---
 
@@ -97,11 +99,11 @@
 - [ ] Порты 3000, 8080–8097, 5432, 5672, 15672 свободны
 - [ ] Git установлен
 
-### Шаг 1. Клонирование репозитория
+### Шаг 1. Клонирование своего репозитория
 
 ```bash
-git clone <repo-url>
-cd processing-practice
+git clone https://github.com/<org>/Practic<Имя><Фамилия>.git
+cd Practic<Имя><Фамилия>
 ```
 
 ### Шаг 2. Настройка окружения
@@ -201,17 +203,19 @@ docker compose up -d && sleep 10 && ./scripts/smoke-test.sh
 
 **Workflow сдачи**: см. [`practic/docs/submission-guide.md`](https://github.com/LektonSoftwareTestingCourse/Practic/blob/main/docs/submission-guide.md).
 
-- Ветка: `practice-1-{surname}`
-- Сдача через GitHub Issue с label `practice-1`
-- Проверка: CI-автопроверка (сборка, контейнеры, smoke)
+- Репозиторий: свой `Practic{Имя}{Фамилия}` (выдаёт куратор)
+- Сдача через GitHub Issue в эталонном репозитории с label `practice-1` (ссылка на репозиторий + ссылка на Actions run)
+- Проверка: CI (лёгкий — автоматически, тяжёлый smoke — вручную через «Practice Run» → practice-1)
 - Баллы: 6 базовых + 5 бонусных за сдачу в дедлайн
 
-**Что проверит CI:**
+**Что проверит CI (smoke, запускается вручную):**
 1. Репозиторий клонируется
 2. `.env` корректно создан из `.env.example`
 3. `docker compose up -d` поднимает все 11 сервисов + RabbitMQ
 4. Все health-check эндпоинты возвращают 200
 5. `smoke-test.sh` завершается `ALL CHECKS PASSED`
+
+> Тяжёлая проверка `smoke-tests` не гоняется на каждый push — она билдит docker-образы. Запустите её вручную перед сдачей: **Actions → Practice Run (heavy checks) → Run workflow → выбрать `1`**. Ссылку на зелёный прогон вставьте в Issue.
 
 ---
 
