@@ -50,7 +50,7 @@
 | Силлабус | `COURSE_SYLLABUS.md` | Параметры курса, модули, модель оценивания 40+50+10 |
 | Модули | `materials/module-01-intro` … `module-08-ci-cd-strategy` | Лекции и практики по модулям |
 | Шаблоны артефактов | `materials/artifacts/` | 7 шаблонов сдаваемых работ (артефакты 1–7) |
-| Администрирование | `materials/admin/` | РПД (2 версии), FAQ, review-документ, описание для ИТМО |
+| Администрирование | `materials/admin/` | FAQ, описание для ИТМО, локальная копия РПД (untracked); актуальная РПД — в `testing-course-internal` |
 | Публичное описание | `materials/admin/DocsForItmoStudents/TestingFor.md` | Компактное описание курса и стека |
 
 ### Ключевые числа курса

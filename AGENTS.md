@@ -32,7 +32,7 @@
 | Практика | `materials/module-NN-*/practice/practice-NN.md` |
 | Требования к сдаваемой работе | `materials/artifacts/artifact-N-*.md` |
 | Дедлайны, FAQ, порядок сдачи | `materials/admin/faq-students.md` |
-| РПД, ревью, описание для вуза | `materials/admin/` |
+| FAQ, описание для вуза, локальная копия РПД | `materials/admin/` |
 
 ## Правила работы
 

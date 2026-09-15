@@ -30,8 +30,8 @@ Dockerfile, скриптов. Весь контент — статические
 | Иллюстрации | `materials/module-01-intro/slides/Pictires/*.jpeg` | Лектор | Фоны и схемы для слайдов | Публичный GitHub |
 | Практика | `materials/module-NN-*/practice/practice-NN.md` | Студент, преподаватель | Сценарий, критерии, чек-лист сдачи | Публичный GitHub |
 | Шаблон артефакта | `materials/artifacts/artifact-N-*.md` | Студент | Требования и структура сдаваемой работы | Публичный GitHub |
-| РПД | `materials/admin/РПД_Тестирование_ПО.md`, `materials/admin/РПД_Тестирование_ПО_ИТМО.md` | Методист, вуз | Рабочая программа дисциплины | Локально / GitHub |
-| Ревью контента | `materials/admin/review-module-02-open-questions.md` | Лекторы, методист | Открытые вопросы по модулю 2 | Публичный GitHub |
+| РПД | `testing-course-internal/plans/РПД_Тестирование_ПО_ИТМО.md` (актуальный источник); локальная копия `materials/admin/РПД_Тестирование_ПО_ИТМО.md` (untracked, не публикуется) | Методист, вуз | Рабочая программа дисциплины | Приватный GitHub / локально |
+| Ревью контента (удалён 15.09.2026) | `materials/admin/review-module-02-open-questions.md` — файла в репозитории нет; копия вне репозитория (`C:\GIT\github-publish\.local-backup-20260915\`); решения — `SlidevSlides/plans/План_синхронизации_модуля_02.md` | Лекторы, методист | История ревью модуля 2 | — |
 | Индекс для агента | `AGENTS.md` | AI-агент | Навигация по `.agents/docs/` | Публичный GitHub |
 
 ### Точка входа доставки
@@ -47,7 +47,7 @@ Dockerfile, скриптов. Весь контент — статические
 | Модуль | Лекции | Практики | Прочее |
 |---|---|---|---|
 | 1 Введение | `lecture-01.md`, `lecture-02.md` (+PDF) | `practice-01.md`, `practice-02.md` | `Pictires/` 5 JPEG |
-| 2 Тест-дизайн | нет | нет | контент в соседнем `SlidevSlides` — см. Q-2 |
+| 2 Тест-дизайн | `lecture-03.md`, `lecture-04.md` (+PDF) | `practice-01.md` | `Pictires/` 11 файлов; влито PR #2 — см. Q-2 |
 | 3 Пирамида и CI/CD | `lecture-05.md`, `lecture-06.md` | нет | — |
 | 4 Unit-тесты | `lecture-01.md`, `lecture-02.md` | `practice-01.md`, `practice-02.md` | `demo/` пуст |
 | 5 API-тесты | `lecture-09.md`, `lecture-10.md` | нет | `demo/` пуст |
