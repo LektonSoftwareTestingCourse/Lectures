@@ -123,10 +123,41 @@ flowchart TD
 - Unit можно проектировать и по спецификации метода (чёрный ящик), и по структуре кода (белый ящик) — категорию задаёт источник информации, а не уровень
 - Порядок проверок в наборе: сначала валидное значение (позитивный класс), затем границы и невалидные классы
 
+```java
+// services/gateway — TransactionRequestValidatorTest
+class TransactionRequestValidatorTest {
+    private final TransactionRequestValidator validator = new TransactionRequestValidator();
+
+    @Test                                              // сначала позитив
+    void shouldAcceptValidRequest() {
+        assertDoesNotThrow(() -> validator.validate(validRequest().build()));
+    }
+
+    @ParameterizedTest                                 // границы PAN: 15 и 17 цифр
+    @ValueSource(strings = {"", "400000123456000", "40000012345600001"})
+    void shouldRejectInvalidPan(String pan) {
+        var request = validRequest().pan(pan).build();
+        assertThrows(TransactionValidationException.class,
+                () -> validator.validate(request));
+    }
+
+    private AuthorizationRequest.AuthorizationRequestBuilder validRequest() {
+        return AuthorizationRequest.builder()
+                .mti("0100").stan("000001").pan("4000001234560001")
+                .processingCode("000000").amount(new BigDecimal("150000"))
+                .currencyCode("643")
+                .transmissionDateTime(Instant.parse("2026-06-01T10:30:00Z"))
+                .terminalId("TERM0001").merchantId("MERCH0000000001")
+                .mcc("5411").acquirerId("ACQ001");
+    }
+}
+```
+
 **Визуализация:**
 - Макет: слева код метода и список проверяемых полей, справа иконка IDE с зеленым прогоном тестов.
 - Иллюстрация: `Pictires/lecture-05/img-4-unit.png` — скриншот IDE с зелеными unit-тестами и таймингом в миллисекундах.
 - Акцент: вынести на слайд две маленькие плашки «stub: что вернуть» и «mock: был ли вызван».
+- Акцент: рядом с кодом теста `TransactionRequestValidatorTest` показать зелёный прогон и тайминг в миллисекундах.
 
 **Speaker notes:**
 
@@ -139,6 +170,8 @@ flowchart TD
 > Посмотрим на примеры из СМП. В Gateway есть класс [`TransactionRequestValidator`](../Practic-SMP/services/gateway/src/main/java/com/processing/gateway/validation/TransactionRequestValidator.java:21) с методом `validate()`. Он проверяет поля контракта авторизации: `mti` строго «0100», `pan` ровно 16 цифр, `amount` больше нуля, `currencyCode` ровно 3 символа, `mcc` ровно 4 цифры, плюс обязательные `stan`, `terminalId`, `merchantId`. При нарушении метод бросает исключение. Это чистая логика валидации, и к ней прекрасно применимы техники из модуля 2. Для `pan` мы выделяем классы эквивалентности: валидный это ровно 16 цифр, невалидный это любая другая длина. Для длины берем граничные значения: 15 и 17 цифр. Так один валидатор раскладывается на десяток тестов, каждый проверяет один класс или одну границу.
 >
 > В Authorization есть [`AuthServiceImpl`](../Practic-SMP/services/authorization/src/main/java/com/processing/authorization/services/AuthServiceImpl.java:43) с методом `authorize()`, и это самая насыщенная бизнес-логика в СМП. Порядок проверок строго определен: сначала получить карту, потом проверить статус, потом срок действия, потом достаточность баланса, и только затем резервирование. Каждая ветка отказа упакована в enum [`DeclineOutcome`](../Practic-SMP/services/authorization/src/main/java/com/processing/authorization/constants/DeclineOutcome.java:30), где на каждую причину есть свой ISO-код. То есть тест-дизайн здесь это перечисление всех веток алгоритма, и для каждой ветки уже есть готовое ожидаемое значение.
+>
+> А теперь посмотрим, как такой unit-тест выглядит в коде. На слайде класс `TransactionRequestValidatorTest` для Gateway. Первый метод это позитивный сценарий: собираем валидный `AuthorizationRequest` через билдер и проверяем, что `validate()` не бросает исключение. Смотрите на порядок: позитив идет первым, как мы и договорились. Дальше параметризованный тест на PAN, где мы подаем пустую строку, 15 и 17 цифр, то есть нижнюю и верхнюю границу невалидного класса. Что здесь важно методологически? Тест не поднимает ни HTTP, ни Spring-контекст: `validator` создается простым `new`, а на вход идет собранный объект. Поэтому прогон занимает миллисекунды. И еще деталь: мы проверяем конкретное исключение `TransactionValidationException`, а не «какую-нибудь ошибку», поэтому тест ловит именно нарушение контракта валидатора, а не побочный сбой.
 >
 > И последнее, что я хочу здесь подчеркнуть. Unit можно проектировать двумя способами. Если мы берем требование к методу из спецификации и не смотрим в код, это черный ящик. Если мы открываем реализацию и требуем покрытия всех ветвей, это белый ящик. Категорию задает источник информации, а не сам уровень.
 >
@@ -156,10 +189,43 @@ flowchart TD
 - Пример СМП: внутренние контракты `/api/internal/route` и `/api/internal/authorize`, формат AuthorizationRequest/AuthorizationResponse, статус-коды 200/400/503
 - Порядок проверок: сначала позитивный сценарий (200 / APPROVED), затем негативные — правило «сначала позитив, потом негатив» из модуля 2 (лекция 3, слайд «Будьте позитивны!»)
 
+```java
+// services/authorization — AuthorizationApiContractTest (REST-assured)
+class AuthorizationApiContractTest {
+    @BeforeAll
+    static void baseUri() { RestAssured.baseURI = "http://localhost:8083"; }
+
+    @Test                                              // позитив: контракт соблюдён
+    void shouldReturn200ForValidAuthorizationRequest() {
+        given()
+            .contentType(ContentType.JSON)
+            .body(authorizationRequestJson())
+        .when()
+            .post("/api/internal/authorize")
+        .then()
+            .statusCode(200)
+            .body("mti", equalTo("0110"))
+            .body("status", anyOf(equalTo("APPROVED"), equalTo("DECLINED")));
+    }
+
+    @Test                                              // негатив: ошибка валидации
+    void shouldReturn400ForInvalidPan() {
+        given()
+            .contentType(ContentType.JSON)
+            .body(authorizationRequestJsonWithPan("400000123456000")) // 15 цифр
+        .when()
+            .post("/api/internal/authorize")
+        .then()
+            .statusCode(400);
+    }
+}
+```
+
 **Визуализация:**
 - Макет: схема контрактов между сервисами по центру, справа пример запроса и ответа.
 - Диаграмма: цепочка контрактов СМП ниже.
 - Иллюстрация: `Pictires/lecture-05/img-5-api.png` — иконки сервисов со стрелками HTTP между ними.
+- Акцент: рядом с кодом теста показать пару «запрос `AuthorizationRequest` / ответ `AuthorizationResponse`» из контракта.
 
 ```mermaid
 flowchart LR
@@ -182,6 +248,8 @@ flowchart LR
 >
 > Здесь же закрепим порядок проверок. Сначала позитивный сценарий: отправляем валидный `AuthorizationRequest`, ждем 200 и корректный ответ со статусом APPROVED. И только убедившись, что happy path зеленый, начинаем ломать систему негативными данными. Почему такой порядок важен? Потому что при красном позитивном тесте любые 400 и DECLINED просто неинформативны. Система может отклонять вообще все, и мы не поймем, работает ли валидация и бизнес-логика. Это правило из модуля 2, и в модуле 5 мы применим его к API.
 >
+> Посмотрим, как контракт проверяется кодом. На слайде пример на REST-assured для `POST /api/internal/authorize` сервиса Authorization. Базовый адрес задаем один раз, дальше два теста. Первый, позитивный: отправляем валидный `AuthorizationRequest`, ждем 200, проверяем `mti` равный 0110 и статус APPROVED или DECLINED. Почему на этом уровне допустимы оба статуса? Потому что здесь нас интересует прежде всего соблюдение контракта: сервис принял запрос и вернул корректный `AuthorizationResponse`. Второй тест, негативный: подаем PAN из 15 цифр и ждем 400, потому что сервис объявляет `@Valid` на теле запроса. И обратите внимание на главное отличие от unit: тест держится за контракт, а не за реализацию. Если Switch переименует поле или поменяет формат, тест упадет именно там, где сломан договор между сервисами.
+>
 > И в целом API-тесты это золотая середина автоматизации. Они достаточно быстрые, сотни миллисекунд на тест, достаточно надежные, потому что зависимости контролируются, и при этом покрывают реальные интеграционные риски, которых unit-тесты не видят.
 
 ---
@@ -195,10 +263,31 @@ flowchart LR
 - Проверяют то, что не ловится ниже: сквозные бизнес-сценарии
 - Пример СМП: Terminal Simulator → Gateway → Switch → Authorization (+ Bin Lookup, Card Management) → RabbitMQ → Transaction Logger → Dashboard
 
+```java
+// services/e2e-tests — RabbitMQAsyncE2eTest (реальный тест СМП)
+@Test
+public void testAsyncTransactionLogging() {
+    String stan = String.format("%06d", (int) (Math.random() * 999999));
+
+    // Шаг 1: сквозной путь через Gateway (Terminal Simulator -> ... -> Logger)
+    Response tx = RestAssured.given().baseUri("http://localhost:8080")
+            .contentType("application/json")
+            .body(requestBody(stan, testPan))
+            .when().post("/api/transactions");
+    assertEquals(tx.getStatusCode(), 200);
+
+    // Шаг 2: eventual consistency — ждём запись в Logger (Awaitility, до 15 сек)
+    await().atMost(Duration.ofSeconds(15))
+           .pollInterval(Duration.ofSeconds(1))
+           .until(() -> searchByStan(stan).jsonPath().getInt("total") >= 1);
+}
+```
+
 **Визуализация:**
 - Макет: горизонтальная цепочка сервисов на всю ширину слайда, над ней подпись «один сквозной сценарий».
 - Диаграмма: путь транзакции ниже.
 - Иллюстрация: `Pictires/lecture-05/img-6-e2e.png` — та же цепочка, но в виде красивой схемы с иконками, если нужна графика вместо mermaid.
+- Акцент: подчеркнуть три проверки одного сценария: HTTP-ответ, запись в Logger и изменение баланса.
 
 ```mermaid
 flowchart LR
@@ -219,6 +308,8 @@ flowchart LR
 > Пример из СМП. Terminal Simulator отправляет запрос авторизации на `POST /api/transactions`. Gateway его валидирует, Switch маршрутизирует по BIN, Authorization обогащает данные из Bin Lookup и проверяет карту в Card Management, при одобрении резервирует средства. А результат асинхронно уходит через RabbitMQ в Transaction Logger, откуда его подхватывает веб-дашборд. Мы проверяем финальное состояние: ответ клиенту, запись в логе и изменение баланса. Весь путь может занимать секунды, а запись в лог появляется с задержкой, потому что у нас есть eventual consistency.
 >
 > Тест-дизайн здесь отталкивается от бизнес-сценариев, а не от классов входных данных. Мы задаем вопрос: какие сквозные сценарии критичны для бизнеса и их нельзя проверить на нижних уровнях? В СМП это успешная покупка полным путем, отклонение по недостатку средств и отклонение по заблокированной карте. Таких сценариев немного, поэтому и E2E-тестов немного. Трехзвенную проверку, когда мы сверяем ответ, запись в логе и баланс, мы подробно разберем в модуле 7.
+>
+> Как это выглядит в коде, покажу на фрагменте реального теста `RabbitMQAsyncE2eTest`. Он проверяет тот самый асинхронный путь. Первый шаг: через Gateway отправляем транзакцию и ждем 200, это синхронная часть пути. Второй шаг: поскольку запись в Logger появляется асинхронно, мы не спим фиксированное время, а ждем условие через Awaitility: опрашиваем поиск по STAN, пока транзакция не появится, максимум пятнадцать секунд. И это ключевая идея E2E: один тест проверяет связность всего контура, то есть HTTP-ответ, доставку сообщения через RabbitMQ и сохранение в базе. Именно эту связность нельзя проверить ни на unit, ни на API уровне, и именно поэтому E2E-тест дорогой и нестабильный, но при этом необходимый.
 >
 > И процитирую ISTQB, который отдельно подчеркивает: зависимость от окружения это одна из главных проблем тестирования. Поэтому E2E-тесты нужны, но их должно быть мало, только критичные бизнес-сценарии.
 
