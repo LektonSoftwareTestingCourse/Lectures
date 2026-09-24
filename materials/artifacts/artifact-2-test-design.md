@@ -13,7 +13,7 @@
 3. **Test-design ядра** (Authorization и Card-Management) — `docs/practice-2/test-design.md`
 4. **Чек-листы** (дымовое тестирование и критический путь) — `docs/practice-2/checklists.md`
 
-Отдельно размещаются машинно-проверяемые артефакты попарного тестирования: `docs/practice-2/pict/model.txt` и `docs/practice-2/pict/cases.txt`.
+Отдельно размещаются машинно-проверяемые артефакты попарного тестирования: для Authorization — `docs/practice-2/pict/model.txt` и `docs/practice-2/pict/cases.txt`, для Card-Management — `docs/practice-2/pict/model-card-management.txt` и `docs/practice-2/pict/cases-card-management.txt`.
 
 В состав артефакта входят только техники, разобранные на лекции 3. Таблицы решений, переходы состояний и баг-репорты в артефакт 2 не включаются: они изучаются на лекции 4 и применяются в последующих модулях.
 
@@ -53,8 +53,10 @@
 | Поле | Граница | ON | OFF | Ожидаемый результат |
 
 ## 3. Попарное тестирование (pairwise)
-- Модель PICT (не менее 6 параметров) и ограничения — `docs/practice-2/pict/model.txt`
-- Сгенерированный набор — `docs/practice-2/pict/cases.txt`
+- Authorization: модель PICT (не менее 6 параметров) и ограничения — `docs/practice-2/pict/model.txt`
+- Authorization: сгенерированный набор — `docs/practice-2/pict/cases.txt`
+- Card-Management: модель PICT (не менее 6 параметров) и ограничения — `docs/practice-2/pict/model-card-management.txt`
+- Card-Management: сгенерированный набор — `docs/practice-2/pict/cases-card-management.txt`
 - Обоснование применения 2-wise покрытия и критичные сочетания, добавленные вручную
 
 ## 4. Тест-кейсы
@@ -73,11 +75,11 @@
 ## Требования к качеству
 
 - Стратегия и план составлены на всю систему, а не на один сервис.
-- Модель PICT содержит не менее 6 параметров и хотя бы одно ограничение.
-- Попарный набор сгенерирован и спроецирован в тест-кейсы.
+- Для ядра — Authorization и Card-Management — построены модели PICT, каждая содержит не менее 6 параметров и хотя бы одно ограничение.
+- Оба попарных набора сгенерированы, и каждая строка каждого набора спроецирована в тест-кейс.
 - Каждый тест-кейс содержит идентификатор и связанное требование.
 - Баллы начисляются только при наличии всех компонентов задания.
 
 ## Как сдавать
 
-Ветка `practice-2-{surname}` + Issue с label `practice-2`, в теле — полное содержимое всех четырёх документов (для LLM-проверки). Модель и набор PICT — в `docs/practice-2/pict/`.
+Ветка `practice-2-{surname}` + Issue с label `practice-2`, в теле — полное содержимое всех четырёх документов (для LLM-проверки). Модели и наборы PICT — в `docs/practice-2/pict/`.
