@@ -45,5 +45,5 @@
 
 ## Задание и инструктаж
 
-- Задание: [`../practice/practice-01.md`](../practice/practice-01.md)
-- Разбор по диаграммам: [`../practice/practice-01-guide.md`](../practice/practice-01-guide.md)
+- Задание: [`../practice/practice-03.md`](../practice-03.md)
+- Разбор по диаграммам: [`../practice/practice-03-guide.md`](../practice-03-guide.md)
