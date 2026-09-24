@@ -78,14 +78,14 @@
 | 2 | Тестовый план СМП | проект | `docs/practice-2/test-plan.md` |
 | 3 | Test-design ядра: классы эквивалентности, границы, pairwise | ядро | `docs/practice-2/test-design.md` |
 | 4 | Чек-листы: дымовое тестирование и критический путь | периферия | `docs/practice-2/checklists.md` |
-| — | Модель PICT и сгенерированный попарный набор | ядро | `docs/practice-2/pict/` |
+| — | Модели PICT и сгенерированные попарные наборы (Authorization и Card-Management) | ядро | `docs/practice-2/pict/` |
 
 ### Критерии сдачи
 
 - присутствуют четыре документа: `test-strategy.md`, `test-plan.md`, `test-design.md`, `checklists.md`;
 - документ `test-design.md` содержит обязательные разделы: классы эквивалентности, граничные значения, попарное тестирование, тест-кейсы;
-- модель `docs/practice-2/pict/model.txt` включает не менее шести параметров и хотя бы одно ограничение;
-- набор `docs/practice-2/pict/cases.txt` сгенерирован.
+- модели PICT для обоих сервисов ядра — Authorization (`model.txt`) и Card-Management (`model-card-management.txt`) — включают не менее шести параметров и хотя бы одно ограничение;
+- наборы `docs/practice-2/pict/cases.txt` и `docs/practice-2/pict/cases-card-management.txt` сгенерированы.
 
 **Баллы начисляются только при наличии всех компонентов задания**: отсутствие любого из них делает артефакт неполным.
 
@@ -197,7 +197,7 @@ IF [expiry] = "expired" THEN [amount_vs_balance] = "below";
 
 ### Попарное тестирование
 
-Для ядра строится модель PICT (см. Часть 2), задаются ограничения и генерируется набор. Каждая строка набора проецируется в отдельный тест-кейс.
+Для ядра строится модель PICT (см. Часть 2) **для каждого из двух сервисов** — Authorization и Card-Management, — задаются ограничения и генерируется набор. Каждая строка каждого набора проецируется в отдельный тест-кейс.
 
 ### Тест-кейсы
 
@@ -235,8 +235,8 @@ IF [expiry] = "expired" THEN [amount_vs_balance] = "below";
 - [ ] Стратегия и тестовый план составлены на всю систему, а не на один сервис
 - [ ] Для Authorization и Card-Management выделены классы эквивалентности с представителями
 - [ ] Границы заданы тройками ON/OFF для лимитов, баланса и `expiryDate`
-- [ ] Модель PICT содержит не менее шести параметров и ограничения
-- [ ] Попарный набор сгенерирован и спроецирован в тест-кейсы
+- [ ] Модели PICT для Authorization и Card-Management содержат не менее шести параметров и ограничения
+- [ ] Оба попарных набора сгенерированы и спроецированы в тест-кейсы
 - [ ] Подготовлены чек-листы дымового тестирования и критического пути
 
 ### Типичные ошибки
@@ -276,7 +276,7 @@ IF [expiry] = "expired" THEN [amount_vs_balance] = "below";
 - Сдача через GitHub Issue с label `practice-2`
 - В теле Issue — полное содержимое всех четырёх документов для LLM-проверки
 - Проверка: автоматическая (наличие и структура документов, модель PICT, генерация набора) + рубрика LLM (`skill-1`) + взаимное рецензирование
-- Баллы: 7 базовых + 5 бонусных за сдачу в дедлайн
+- Баллы: 7 базовых
 
 **Что проверит автоматика:**
 
@@ -304,4 +304,3 @@ IF [expiry] = "expired" THEN [amount_vs_balance] = "below";
 - [`tz/05-card-management.md`](../../../practic/tz/05-card-management.md) — ТЗ сервиса Card-Management
 - [`practic/docs/checklists.md`](../../../practic/docs/checklists.md) — чек-листы само-приёмки
 - [`practic/docs/submission-guide.md`](../../../practic/docs/submission-guide.md) — сдача артефактов
-- [`materials/llm/skills/skill-1-test-design.md`](../../llm/skills/skill-1-test-design.md) — рубрика LLM-проверки артефакта 2
