@@ -3,6 +3,7 @@
 > Файлы, с которых начинается работа с репозиторием, и их потребители.
 > В `Lectures` нет исполняемых точек входа — только документы.
 > **Обновлять при изменении:** `COURSE_SYLLABUS.md`, `materials/`
+> **Проверено:** 2026-10-01
 
 ## Обзор
 
@@ -47,8 +48,8 @@ Dockerfile, скриптов. Весь контент — статические
 | Модуль | Лекции | Практики | Прочее |
 |---|---|---|---|
 | 1 Введение | `lecture-01.md`, `lecture-02.md` (+PDF) | `practice-01.md`, `practice-02.md` | `Pictires/` 5 JPEG |
-| 2 Тест-дизайн | `lecture-03.md`, `lecture-04.md` (+PDF) | `practice-01.md` | `Pictires/` 11 файлов; влито PR #2 — см. Q-2 |
-| 3 Пирамида и CI/CD | `lecture-05.md`, `lecture-06.md` | нет | — |
+| 2 Тест-дизайн | `lecture-03.md`, `lecture-04.md` + варианты `lecture-04-{exploratory-testing,llm-limits,white-box-coverage}.md` (все +PDF) | `practice-01.md` | изображения модуля (в т.ч. `lekton-logo.png`, `pict.exe`); влито PR #2 — см. Q-2 |
+| 3 Пирамида и CI/CD | `lecture-05.md`, `lecture-06.md` (+PDF) | `practice-03.md`, `practice-03-guide.md` | `practice/artifacts/` (`README.md`, `test-cases.md`) |
 | 4 Unit-тесты | `lecture-01.md`, `lecture-02.md` | `practice-01.md`, `practice-02.md` | `demo/` пуст |
 | 5 API-тесты | `lecture-09.md`, `lecture-10.md` | нет | `demo/` пуст |
 | 6 Интеграционные | `lecture-01.md`, `lecture-02.md` | `practice-01.md`, `practice-02.md` | `demo/` пуст |
