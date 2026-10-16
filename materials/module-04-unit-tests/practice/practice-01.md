@@ -76,7 +76,7 @@ services/{service}/src/test/java/...
 
 ## Часть 2. Демонстрация: три теста на Authorization (0:10–0:25)
 
-Преподаватель на экране пишет тестовый класс `AuthServiceImplSimpleTest` для сервиса Authorization — три теста, которые покрывают ключевые сценарии и демонстрируют приёмы лекций.
+Преподаватель на экране показывает тестовый класс `AuthServiceImplSimpleTest` для сервиса Authorization — три теста, которые покрывают ключевые сценарии и демонстрируют приёмы лекций.
 
 ### Шаг 1. Структура класса и фикстуры
 
@@ -117,7 +117,7 @@ class AuthServiceImplSimpleTest {
 
 Разбор:
 
-- `@ExtendWith(MockitoExtension.class)` — подключает Mockito к JUnit 5; моки создаются перед каждым тестом.
+- `@ExtendWith(MockitoExtension.class)` — подключен Mockito к JUnit 5; моки создаются перед каждым тестом.
 - `@Mock` — создание моков зависимостей; `@InjectMocks` не используется — объект создаётся явно в `@BeforeEach`, чтобы новая зависимость давала ошибку компиляции, а не NPE в рантайме.
 - Константы вынесены в начало класса — читаемость и отсутствие магических чисел.
 - `REQUEST_TIME` фиксируется один раз: `AuthorizationResponse` вычисляет длительность через `Instant.now()`, и при разрыве более ~24,8 дней возникает переполнение `int`. Это деталь реализации, о которой нужно знать.
@@ -351,7 +351,7 @@ mvn -f services/switch/pom.xml verify
 
 ## Сдача артефакта
 
-**Workflow сдачи**: см. [`practic/docs/submission-guide.md`](../../../Practic/docs/submission-guide.md).
+**Workflow сдачи**: см. `../../../Practic/docs/submission-guide.md`.
 
 - Ветка: `practice-3-{surname}`
 - Сдача через GitHub Issue с label `practice-3`
@@ -368,6 +368,6 @@ mvn -f services/switch/pom.xml verify
 
 - Лекция 7 «Unit-тестирование: принципы FIRST, AAA, test doubles» — `slides/module-04/lecture-07.md`
 - Лекция 8 «Качество unit-тестов: четыре столпа, покрытие, maintainability» — `slides/module-04/lecture-08.md`
-- [`tz/04-authorization.md`](../../../Practic/tz/04-authorization.md) — ТЗ сервиса Authorization
-- [`tz/05-card-management.md`](../../../Practic/tz/05-card-management.md) — ТЗ сервиса Card Management
-- [`practic/docs/submission-guide.md`](../../../Practic/docs/submission-guide.md) — сдача артефактов
+-`../../../Practic/tz/04-authorization.md` — ТЗ сервиса Authorization
+- `../../../Practic/tz/05-card-management.md` — ТЗ сервиса Card Management
+- `../../../Practic/docs/submission-guide.md` — сдача артефактов
