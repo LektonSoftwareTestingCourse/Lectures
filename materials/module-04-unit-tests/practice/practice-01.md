@@ -27,7 +27,7 @@
 | JDK 21 | сборка и запуск тестов | `java -version` |
 | Maven | сборка проекта | `mvn -version` |
 | Docker Desktop | запуск СМП (для понимания контрактов) | `docker compose version` |
-| Git | ветка `practice-3-{surname}`, коммиты артефакта | `git --version` |
+| Git | ветка `practice-4-{surname}`, коммиты артефакта | `git --version` |
 
 Требуемые входные данные и материалы:
 
@@ -353,8 +353,8 @@ mvn -f services/switch/pom.xml verify
 
 **Workflow сдачи**: см. `../../../Practic/docs/submission-guide.md`.
 
-- Ветка: `practice-3-{surname}`
-- Сдача через GitHub Issue с label `practice-3`
+- Ветка: `practice-4-{surname}`
+- Сдача через GitHub Issue с label `practice-4`
 - В теле Issue — ссылки на:
   - зелёный прогон `java-services` в Actions;
   - артефакты JaCoCo (четыре отчёта);
