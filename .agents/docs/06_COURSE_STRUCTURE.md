@@ -23,7 +23,7 @@
 | 4 | `module-04-unit-tests` | 7–8 | `lecture-01.md`, `lecture-02.md` | Готово, локальная нумерация — Q-1 |
 | 5 | `module-05-api-tests` | 9–10 | `lecture-09.md`, `lecture-10.md` | Готово |
 | 6 | `module-06-integration-tests` | 11–12 | `lecture-01.md`, `lecture-02.md` | Готово, локальная нумерация — Q-1 |
-| 7 | `module-07-e2e` | 13–14 | нет | Пусто |
+| 7 | `module-07-e2e` | 13–14 | `lecture-13.md` (+PDF, 37 слайдов), `lecture-14.md` (+PDF, 19 слайдов), `lecture-14-bug-reports.md` (+PDF, 18 слайдов, 30 мин), `practice-07-intro.pdf` (5 слайдов) | Визуальные версии — `SlidevSlides/slides/module-07`; практика: `practice-07.md`, `practice-07-howto.md` |
 | 8 | `module-08-ci-cd-strategy` | 15–16 | нет | Пусто |
 
 > Глобальные номера для модулей 4 и 6 выведены по позиции модуля в силлабусе
